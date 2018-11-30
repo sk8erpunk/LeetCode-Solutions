@@ -12,15 +12,13 @@ Example 2:
 Input: [2,2,1,1,1,2,2]
 Output: 2
 */
-
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
         int n = nums.size();
         unordered_map<int,int> majority;
-        for(int i = 0; i < nums.size(); i++){
-            majority[nums[i]]++;
-            if(majority[nums[i]] > n/2 ){
+        for(int i = 0; i < n; i++){
+            if(++majority[nums[i]] > n/2 ){
                 return nums[i];
             }
         }
