@@ -18,23 +18,17 @@ Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
-        vector<int> indices;
-        if(numbers.empty() || numbers.size() == 1){
-            return indices;
-        }
-        
-        int i = 0, j = numbers.size()-1;
-        while(i < j){
-            if(numbers[i] + numbers[j] == target){
-                indices.push_back(i+1);
-                indices.push_back(j+1);
+        vector<int> indices;       
+        int start = 0, end = numbers.size()-1;
+        while(start < end){
+            if(numbers[start] + numbers[end] == target){
+                indices.push_back(start+1); // indices starts from 1
+                indices.push_back(end+1);
                 return indices;
-            }
-            if(numbers[i] + numbers[j] > target){
-                j--;
-            }
-            if(numbers[i] + numbers[j] < target){
-                i++;
+            } else if(numbers[start] + numbers[end] > target){
+                end--;
+            } else {
+                start++;
             }
         }
         return indices;
