@@ -16,44 +16,36 @@ minStack.top();      --> Returns 0.
 minStack.getMin();   --> Returns -2.
 */
 
-
 class MinStack {
 private:
-    stack<int> min_stack;
-    stack<int> my_stack;
+    stack<int> minStack;
+    stack<int> myStack;
     
 public:
     /** initialize your data structure here. */
-    MinStack() {
-    }
+    MinStack() {}
     
     void push(int x) {
-        if(my_stack.empty()) {
-            my_stack.push(x);
-            min_stack.push(x);
-            return;
-        }
-        if(x < min_stack.top()){
-            min_stack.push(x);
-        } else {
-            min_stack.push(min_stack.top());
-        }
-        my_stack.push(x);
+        myStack.push(x);
+        if(minStack.empty() || x <= minStack.top())
+            minStack.push(x);
+        else 
+            minStack.push(minStack.top());
     }
     
     void pop() {
-        my_stack.pop();
-        min_stack.pop();
+        myStack.pop();
+        minStack.pop();
     }
+    
     int top() {
-        return my_stack.top();
+        return myStack.top();
     }
     
     int getMin() {
-        if(my_stack.empty()){
+        if(myStack.empty())
             throw -1;
-        }
-        return min_stack.top();
+        return minStack.top();
     }
 };
 

@@ -27,21 +27,26 @@ return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
     bool hasPathSum(TreeNode* root, int sum) {
-        if(!root){
-            return false;
-        }
-        sum = sum - root->val;
+        if(!root) return false;
         
-        // if reached a leaf
-        if(!root->left && !root->right && sum == 0){
+        sum -= root->val;
+    
+        // reached a leaf with sum = 0 
+        if(!root->left && !root->right && sum == 0)
             return true;
-        } 
-        bool l = hasPathSum(root->left,sum);
-        bool r = hasPathSum(root->right,sum);
-        return (l || r);
         
+        return hasPathSum(root->left,sum) || hasPathSum(root->right,sum);
     }
 };

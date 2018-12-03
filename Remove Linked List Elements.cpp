@@ -16,31 +16,33 @@ Output: 1->2->3->4->5
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
 class Solution {
 public:
     ListNode* removeElements(ListNode* head, int val) {
-        if(!head){
+        if(!head)
             return NULL;
-        }
         
         //special case
-        while(head->val == val){
+        while(head && head->val == val){
             head = head->next;
-            if(!head){
-                return head;                
-            }
         }
         
-        ListNode* itr = head->next;
-        ListNode* prev = head;
-        while(itr != NULL){
-            if(itr->val == val){
-                prev->next = itr->next;
-                itr = prev->next;
-            } else {
-                itr = itr->next;
-                prev = prev->next;   
-            }
+        //  head doesnt has val for sure
+        ListNode* prev = NULL, *curr = head;
+        while(curr){
+            if(curr->val == val)
+                prev->next = curr->next;
+            else 
+                prev = curr;
+            curr = curr->next;
         }
         return head;
     }
