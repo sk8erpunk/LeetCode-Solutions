@@ -2,60 +2,35 @@
 Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
 
 Example 1:
-
 Input: "babad"
 Output: "bab"
 Note: "aba" is also a valid answer.
-Example 2:
 
+Example 2:
 Input: "cbbd"
 Output: "bb"
 */
 
-char* copysub(char* s, int i, int j){
-    char* res = (char*)malloc(sizeof(char)*(j-i+2));
-    int k = i;
-    char* str = res;
-    while(k<=j){
-        *str=s[k];
-        str++;
-        k++;
-    }
-    *str = '\0';
-    return res;
-}
-
-
-bool checkpalindrom(char* start, char* end){
-    while(start <= end && *start == *end){
-        start++;
-        end--;
-    }
-    return (*start == *end);
-}
-
-char* longestPalindrome(char* s) {
-    
-    int len = strlen(s);
-    int i=0,j;
-    int besti=0,bestj=0;
-    int max = 1;
-    
-    while(i < len){
-        for(j = len-1; j > i && (j-i+1) > max; j--){
-            if(s[i] == s[j]){
-                if(checkpalindrom(&s[i],&s[j])){
-                    int currLen = j-i+1;
-                    if(currLen > max){
-                        max = currLen;
-                        besti = i;
-                        bestj = j;
-                        break;
-                    }
-                }
-            }
+class Solution {
+public:
+    void expand(int start, int end, string s, pair<int,int>* longest){
+        while(start >=0 && end < s.size() && s[start] == s[end]){
+            start--;
+            end++;
         }
-        i++;
+        if(longest->second < end-start-1){
+            longest->second = end-start-1;
+            longest->first = start+1;
+        }
     }
-    return copysub(s,besti,bestj);
-}
+    
+    string longestPalindrome(string s) {
+        if(s.empty() || s.size() < 2) return s;
+        pair<int,int> longest = {0,0};
+        for(int i = 0; i < s.size(); i++){
+            expand(i,i,s,&longest);
+            expand(i,i+1,s,&longest);
+        }
+        return s.substr(longest.first,longest.second);
+    }
+};
