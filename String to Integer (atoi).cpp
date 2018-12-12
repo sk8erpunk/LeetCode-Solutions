@@ -1,41 +1,36 @@
 /*
 Implement atoi which converts a string to an integer.
-
 The function first discards as many whitespace characters as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many numerical digits as possible, and interprets them as a numerical value.
-
 The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function.
-
 If the first sequence of non-whitespace characters in str is not a valid integral number, or if no such sequence exists because either str is empty or it contains only whitespace characters, no conversion is performed.
-
 If no valid conversion could be performed, a zero value is returned.
 
 Note:
-
 Only the space character ' ' is considered as whitespace character.
 Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. If the numerical value is out of the range of representable values, INT_MAX (231 − 1) or INT_MIN (−231) is returned.
-Example 1:
 
+Example 1:
 Input: "42"
 Output: 42
-Example 2:
 
+Example 2:
 Input: "   -42"
 Output: -42
 Explanation: The first non-whitespace character is '-', which is the minus sign.
              Then take as many numerical digits as possible, which gets 42.
-Example 3:
 
+Example 3:
 Input: "4193 with words"
 Output: 4193
 Explanation: Conversion stops at digit '3' as the next character is not a numerical digit.
-Example 4:
 
+Example 4:
 Input: "words and 987"
 Output: 0
 Explanation: The first non-whitespace character is 'w', which is not a numerical 
              digit or a +/- sign. Therefore no valid conversion could be performed.
-Example 5:
 
+Example 5:
 Input: "-91283472332"
 Output: -2147483648
 Explanation: The number "-91283472332" is out of the range of a 32-bit signed integer.
@@ -45,46 +40,49 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
 class Solution {
 public:
     int myAtoi(string str) {
-        if(str.empty()){
-            return 0;
-        }
+        if(str.empty()) return 0;
+        
         char sign = '+';
-        string str_num = "";
-        string::iterator itr = str.begin();
+        string strNum = "";
+        int i = 0;
     
-        while(*itr == ' '){
-            itr++; 
-        }
-        if(itr == str.end() || (*itr != '-' && *itr != '+' && *itr < '0' && *itr > '9')){
+        // skip spaces
+        while(str[i] == ' ')
+            i++; 
+        
+        // if a not valid character found
+        if(i == str.size() || (str[i] != '-' && str[i] != '+' && str[i] < '0' && str[i] > '9'))
             return 0;
+        
+        // if a sign is found
+        if(str[i] == '+' || str[i] == '-'){
+            sign = str[i];
+            i++;
         }
-        if(*itr == '+' || *itr == '-'){
-            sign = *itr;
-            itr++;
+        
+        // if a valid num
+        while(i != str.size() && str[i] >= '0' && str[i] <= '9'){
+            strNum += str[i];
+            i++;
         }
-        while(itr != str.end() && *itr >= '0' && *itr <= '9'){
-            str_num += *itr;
-            itr++;
+        
+        if(!strNum.empty()){
+            return (int)strToNum(strNum, sign);   
         }
-        if(str_num != ""){
-            return (int)convert_to_num(str_num,sign);   
-        }
+        
         return 0;
     }
     
-    long convert_to_num(string str, char sign){
-        string::iterator itr;
+    long strToNum(string str, char sign){
         long num = 0;
-        for (itr = str.begin(); itr != str.end(); itr++){
-            num = num * 10 + *itr - '0';
-            if((sign == '+'? num: num*(-1)) > INT_MAX){
+        for (int i = 0; i < str.size(); i++){
+            num = num * 10 + (str[i] - '0');
+            if((sign == '+' ? num : num * (-1)) > INT_MAX)
                 return INT_MAX;
-            }
-            if((sign == '+'? num: num*(-1)) < INT_MIN){
+            if((sign == '+' ? num : num * (-1)) < INT_MIN)
                 return INT_MIN;
-            }
         }
-        return (sign == '+'? num : num*(-1));
+        return sign == '+' ? num : num * (-1);
     }
     
 };

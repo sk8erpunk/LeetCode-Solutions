@@ -15,37 +15,33 @@ Explanation: 342 + 465 = 807.
  * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
- *     struct ListNode *next;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-
-
-struct ListNode* add(struct ListNode* l1, struct ListNode* l2, int carry) {
-    if(l1 == NULL && l2 == NULL){
-        if(carry){
-            struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
-            node->val = carry;
-            node->next = NULL;
-            return node;
+class Solution {
+public:
+    ListNode* add(ListNode* l1, ListNode* l2, int carry){
+        if(!l1 && !l2 && carry == 0) return NULL;
+        int sum = carry;
+        if(l1)
+            sum += l1->val;
+        if(l2)
+            sum += l2->val;
+        ListNode* res;
+        if(sum > 9){
+            res = new ListNode(sum%10);
+            carry = 1;
+        } else {
+            res = new ListNode(sum);
+            carry = 0;
         }
-        return NULL;
+        ListNode* node = add(l1 != NULL ? l1->next : NULL, l2 != NULL ? l2->next : NULL, carry);
+        res->next = node;
+        return res;
+        
     }
-    
-    struct ListNode* result = (struct ListNode*)malloc(sizeof(struct ListNode));
-    int value = carry;
-    if(l1 != NULL){
-        value += l1->val;
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        return add(l1,l2,0);
     }
-    if(l2 != NULL){
-        value += l2->val;
-    }
-    result->val = value % 10;
-    struct ListNode* more = add(l1 == NULL ? NULL : l1->next, l2 == NULL ? NULL : l2->next, value >= 10 ? 1 : 0);
-    result->next = more;
-    return result;
-}
-
-
-struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
-    return add(l1,l2,0);
-} 
+};
