@@ -36,35 +36,25 @@ class Solution {
     
 public:
     
-    int pushString(string& w, char* arr){
-        string::iterator it = w.begin();
-        int len = 0; 
-        while(it != w.end()){
-            if(*it != '#'){
-                arr[len++] = *it;
-            } else {
-                if(len > 0){
-                    len--;
-                }  
-            }
-            it++;
-        }
-        arr[len] = '\0';
-        return len;
-    }
-    
     bool backspaceCompare(string S, string T) {
-        char* s1 = new char[200];
-        char* s2 = new char[200];
+        int countS = 0, countT = 0;
+        int i = S.size()-1;
+        int j = T.size()-1;
+
+        while(i >= 0 || j >= 0){
+            while(i >= 0 && (S[i] == '#' || countS )){
+                S[i--] == '#' ? countS++ : countS--;
+            }
+            while(j >= 0 && (T[j] == '#' || countT )){
+                T[j--] == '#' ? countT++ : countT--;
+            }
         
-        int len1 = pushString(S, s1);
-        int len2 = pushString(T, s2);
-        if(len1 != len2) return false;
-        int i = 0;
-        while(i < len1){
-            if(s1[i] != s2[i]) return false;
-            i++;
-        } 
-        return true;
+            if(i < 0 || j < 0)
+                return i==j; 
+
+            if(S[i--] != T[j--])
+                return false;
+        }
+        return i==j;
     }
 };

@@ -16,21 +16,12 @@ Output: [1,2,2,3,5,6]
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        int end = n+m-1, j = m-1, i = n-1;
-        while(i >= 0 && j >= 0){
-            if(nums2[i] >= nums1[j]){
-                nums1[end] = nums2[i];
-                i--;
-            } else {
-                nums1[end] = nums1[j];
-                j--;
-            }
-            end--;
-        }
-        while(i >= 0){
-            nums1[end] = nums2[i];
-            i--;
-            end--;
-        }
+        int end = n + m - 1;
+        int last1 = m-1;
+        int last2 = n-1;
+        while(last1 >= 0 && last2 >= 0)
+            nums1[end--] = nums2[last2] >= nums1[last1] ? nums2[last2--] : nums1[last1--];
+        while(last2 >= 0)
+            nums1[end--] = nums2[last2--];
     }
 };

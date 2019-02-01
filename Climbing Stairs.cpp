@@ -21,8 +21,9 @@ Explanation: There are three ways to climb to the top.
 */
 class Solution {
 public:
-    
     int climbStairs(int n) {
+        if(n == 1)
+            return 1;
         int* memo = new int[n+1];
         memo[1] = 1;
         memo[2] = 2; 

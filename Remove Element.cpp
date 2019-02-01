@@ -4,13 +4,11 @@ Do not allocate extra space for another array, you must do this by modifying the
 The order of elements can be changed. It doesn't matter what you leave beyond the new length.
 
 Example 1:
-
 Given nums = [3,2,2,3], val = 3,
 Your function should return length = 2, with the first two elements of nums being 2.
 It doesn't matter what you leave beyond the returned length.
 
 Example 2:
-
 Given nums = [0,1,2,2,3,0,4,2], val = 2,
 Your function should return length = 5, with the first five elements of nums containing 0, 1, 3, 0, and 4.
 Note that the order of those five elements can be arbitrary.
@@ -29,20 +27,17 @@ for (int i = 0; i < len; i++) {
 }
 
 */
-
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
-        int start = 0, end = nums.size()-1;
+        int start = 0;
+        int end = nums.size()-1;
         while(start <= end){
-            if(nums[start] != val){
+            if(nums[start] != val)
                 start++;
-            } else {
-                nums[start] = nums[end];
-                end--;
-            }
+            else 
+                nums[start] = nums[end--];
         }
         return start;
     }
 };
-

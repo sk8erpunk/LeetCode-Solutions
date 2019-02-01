@@ -4,7 +4,6 @@ Given n non-negative integers a1, a2, ..., an , where each represents a point at
 Note: You may not slant the container and n is at least 2.
 
 Example:
-
 Input: [1,8,6,2,5,4,8,3,7]
 Output: 49
 
@@ -13,19 +12,17 @@ Output: 49
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        int max = 0;
-        int l = 0, h = height.size() - 1;
-        while(l < h){
-            int curr_area = min(height[l],height[h])*(h-l);
-            if(curr_area > max){
-                max = curr_area;
-            }
-            if(height[l]<height[h]){
-                l++;
-            } else {
-                h--;
-            }
+        int maxArea = 0;
+        int lo = 0;
+        int hi = height.size() - 1;
+        while(lo < hi){
+            int currArea = min(height[lo],height[hi])*(hi-lo);
+            maxArea = max(currArea, maxArea);
+            if(height[lo] < height[hi])
+                lo++;
+            else 
+                hi--;
         }
-        return max;
+        return maxArea;
     }
 };
