@@ -19,23 +19,17 @@ Explanation: The answer is "wke", with the length of 3.
 */
 
 class Solution {
+    int MaxLetters = 256;
 public:
     int lengthOfLongestSubstring(string s) {
-        vector<int> checked(256,-1);
-        int longest = 0;
-        int start = 0; // substring start;
-        int i = 0;
-        for(; i < s.size(); i++){
-            if(checked[(int)s[i]] == -1){
-                checked[(int)s[i]] = i;   
-            } else { 
-                if(checked[(int)s[i]] >= start){
-                    longest = max(longest, i - start);  // found duplicate
-                    start = checked[(int)s[i]] + 1;     // update substring begining
-                }
-                checked[(int)s[i]] = i;
-            }
+        vector<int> seen(MaxLetters,-1);
+        int maxStr = 0;
+        int start = -1;                               // str start;
+        for(int i =0 ; i < s.size(); i++){
+            start = max(start, seen[s[i]]);
+            seen[s[i]] = i;                         // save in seen
+            maxStr = max(maxStr, i - start);        // update max
         }
-        return max(longest,i-start);
+        return maxStr;
     }
 };

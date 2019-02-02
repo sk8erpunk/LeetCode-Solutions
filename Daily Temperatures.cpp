@@ -5,6 +5,7 @@ For example, given the list of temperatures T = [73, 74, 75, 71, 69, 72, 76, 73]
 Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
 */
 
+/*
 class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& T) {
@@ -23,6 +24,22 @@ public:
                 res[i] = biggerIdx < n ? biggerIdx - i : 0;
                 next[T[i]] = biggerIdx;
             }
+        }
+        return res;
+    }
+};
+
+*/
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        stack<int> days;
+        vector<int> res(T.size(),-1);
+        for(int i = T.size()-1; i >= 0; i--){
+            while(!days.empty() && T[i] >= T[days.top()])
+                days.pop();
+            res[i] = days.empty() ? 0 : days.top() - i;
+            days.push(i);
         }
         return res;
     }
