@@ -7,7 +7,6 @@ Note: next() and hasNext() should run in average O(1) time and uses O(h) memory,
 Credits:
 Special thanks to @ts for adding this problem and creating all test cases.
 */
-
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -18,48 +17,32 @@ Special thanks to @ts for adding this problem and creating all test cases.
  * };
  */
 class BSTIterator {
-    unordered_map<TreeNode*,TreeNode*> parent;
-    TreeNode* curr;
-    
-public:
-    void findParents(TreeNode* p, TreeNode* n){
-        parent[n] = p;
-        if(n->left)
-            findParents(n, n->left);
-        if(n->right)
-            findParents(n, n->right);
+    stack<TreeNode*> nextStack;     
+
+    void pushNext(TreeNode* node){
+        while(node){
+            nextStack.push(node);
+            node = node->left;
+        }
     }
     
+public:
     BSTIterator(TreeNode *root) {
-        if(!root){
-            curr = NULL;
-            return;
-        }
-        findParents(NULL,root);
-        while(root->left) // initialize the first smallest
-            root = root->left;
-        curr = root;
+        if(root)
+            pushNext(root);
     }
 
     /** @return whether we have a next smallest number */
     bool hasNext() {
-        return curr != NULL;
+        return !nextStack.empty();
     }
 
     /** @return the next smallest number */
     int next() {
-        int res = curr->val; // curr saves next element
-        // update curr to next element
-        if(curr->right){   // if it has right find leftest element
-            curr = curr->right;
-            while(curr->left)
-                curr = curr->left;
-        } else { // go up until you are a left son
-            while(parent[curr] && curr == parent[curr]->right) 
-                curr = parent[curr];
-            curr = parent[curr];
-        }
-        return res;
+        TreeNode* next = nextStack.top();
+        nextStack.pop();
+        pushNext(next->right);
+        return next->val;
     }
 };
 

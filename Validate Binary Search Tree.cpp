@@ -35,16 +35,16 @@ Explanation: The input is: [5,1,4,null,null,3,6]. The root node's value
  */
 class Solution {
 public:
-    bool isValidBSTaux(TreeNode* root, int min, int max){
+    bool isValidBSTaux(TreeNode* root, TreeNode* min, TreeNode* max){
         if(!root) return true;
-        if(min != -1 && root->val <= min)
+        else if(min && root->val <= min->val)
             return false;
-        if(max != -1 && root->val >= max)
+        else if(max && root->val >= max->val)
             return false;
-
-        return isValidBSTaux(root->left, min, root->val) && isValidBSTaux(root->right, root->val, max);
+        else 
+            return isValidBSTaux(root->left, min, root) && isValidBSTaux(root->right, root, max);
     }
     bool isValidBST(TreeNode* root) {
-        return isValidBSTaux(root,-1,-1);   
+        return isValidBSTaux(root, NULL, NULL);   
     }
 };
