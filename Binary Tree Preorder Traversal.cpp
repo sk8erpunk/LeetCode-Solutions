@@ -11,7 +11,6 @@ Input: [1,null,2,3]
 
 Output: [1,2,3]
 Follow up: Recursive solution is trivial, could you do it iteratively?
-*/
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -24,17 +23,20 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
 class Solution {
 public:
     
-    void preorder(TreeNode* root, vector<int>& res){
-        if(root){
-            res.push_back(root->val);
-            preorder(root->left, res);
-            preorder(root->right, res);
-        }
-    }
-    
     vector<int> preorderTraversal(TreeNode* root) {
+        if(!root) return {};
+        stack<TreeNode*> stack;
         vector<int> res;
-        preorder(root,res);
+        stack.push(root);
+        while(!stack.empty()){
+            TreeNode* curr = stack.top();
+            stack.pop();
+            res.push_back(curr->val);
+            if(curr->right)
+                stack.push(curr->right);
+            if(curr->left)
+                stack.push(curr->left);
+        }
         return res;
     }
 };

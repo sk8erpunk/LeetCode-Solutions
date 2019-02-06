@@ -26,19 +26,19 @@ class Solution {
 public:
     
     // Returns max path of root recursively
-    int findMaxPath(TreeNode* root, int* currMax){
+    int findMaxPath(TreeNode* root, int* maxPath){
         if(!root) return -1;
-        int ld = findMaxPath(root->left,currMax);
-        int rd = findMaxPath(root->right,currMax);
-        int maxPath = ld + rd + 2;
-        *currMax = max(*currMax, maxPath);
+        int ld = findMaxPath(root->left,maxPath);
+        int rd = findMaxPath(root->right,maxPath);
+        int currMax = ld + rd + 2;
+        *maxPath = max(*maxPath, currMax);
         return max(ld,rd)+1;    // return max depth up 
     }
     
     int diameterOfBinaryTree(TreeNode* root) {
         if(!root) return 0;
-        int currMax = INT_MIN;
-        findMaxPath(root,&currMax);
-        return currMax;
+        int maxPath = 0;
+        findMaxPath(root, &maxPath);
+        return maxPath;
     }
 };
