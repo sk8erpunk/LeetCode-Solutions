@@ -21,9 +21,8 @@ public:
         for(int i = 0; i < B.size(); i++)
             m[B[i]] = i;
         vector<int> mapping;
-        for(int i = 0; i < A.size(); i++){
+        for(int i = 0; i < A.size(); i++)
             mapping.push_back(m[A[i]]);
-        }
         return mapping;
     }
 };

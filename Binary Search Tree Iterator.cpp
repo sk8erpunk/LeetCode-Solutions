@@ -7,6 +7,7 @@ Note: next() and hasNext() should run in average O(1) time and uses O(h) memory,
 Credits:
 Special thanks to @ts for adding this problem and creating all test cases.
 */
+
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -17,31 +18,29 @@ Special thanks to @ts for adding this problem and creating all test cases.
  * };
  */
 class BSTIterator {
-    stack<TreeNode*> nextStack;     
-
-    void pushNext(TreeNode* node){
-        while(node){
-            nextStack.push(node);
-            node = node->left;
+    stack<TreeNode*> st;
+public:
+    void pushNextElements(TreeNode* root){
+        while(root){
+            st.push(root);
+            root = root->left;
         }
     }
     
-public:
     BSTIterator(TreeNode *root) {
-        if(root)
-            pushNext(root);
+        pushNextElements(root);
     }
 
     /** @return whether we have a next smallest number */
     bool hasNext() {
-        return !nextStack.empty();
+        return !st.empty();
     }
 
     /** @return the next smallest number */
     int next() {
-        TreeNode* next = nextStack.top();
-        nextStack.pop();
-        pushNext(next->right);
+        TreeNode* next = st.top();
+        st.pop();
+        pushNextElements(next->right);
         return next->val;
     }
 };
